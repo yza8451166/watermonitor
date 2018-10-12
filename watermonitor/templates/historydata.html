@@ -1,0 +1,156 @@
+{% extends 'layout.html' %}
+
+
+{% block css %}
+
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <ul class="lino" >
+
+                        <li class="act"> 数据展示</li>
+                        <li id="canva">曲线图展示</li>
+                    </ul>
+
+                 <div id="tab-content">
+
+                <div class="ibox float-e-margins hidtab" style="margin-top: 0px">
+                    <div class="ibox-title">
+
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">选项 1</a>
+                                </li>
+                                <li><a href="#">选项 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="table-responsive">
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"><div class="html5buttons"><div class="dt-buttons btn-group"><a class="btn btn-default buttons-copy buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" href="#"><span>Copy</span></a><a class="btn btn-default buttons-csv buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" href="#"><span>CSV</span></a><a class="btn btn-default buttons-excel buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" href="#"><span>Excel</span></a><a class="btn btn-default buttons-pdf buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" href="#"><span>PDF</span></a><a class="btn btn-default buttons-print" tabindex="0" aria-controls="DataTables_Table_0" href="#"><span>Print</span></a></div></div><div class="dataTables_length" id="DataTables_Table_0_length"><label>Show <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div id="DataTables_Table_0_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="DataTables_Table_0"></label></div><div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 25 of 57 entries</div>
+             <div class="btn-group" role="group" aria-label="...">
+          <button id="idCheckAll" type="button" class="btn btn-default">全选</button>
+          <button id="idReverseAll" type="button" class="btn btn-default">反选</button>
+          <button id="idCancelAll" type="button" class="btn btn-default">取消</button>
+          <button id="idEditMode" type="button" class="btn btn-default">进入编辑模式</button>
+          <button type="button" class="btn btn-default">批量删除</button>
+          <button id="idSave" type="button" class="btn btn-default">保存</button>
+          <a id="idAdd" href="/web/asset-add.html" class="btn btn-default">添加</a>
+        </div>
+
+                           <!--
+                            <table class="table table-bordered">
+            <thead id="table_th"></thead>
+            <tbody id="table_tb"></tbody>
+        </table> -->
+<table class="table table-striped table-bordered table-hover dataTables-example dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+
+                    <thead id="table_th">
+                    <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="渲染引擎: activate to sort column descending" style="width: 349px;">渲染引擎</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="浏览器: activate to sort column ascending" style="width: 600px;">浏览器</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="平台(s): activate to sort column ascending" style="width: 544px;">平台(s)</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="引擎版本: activate to sort column ascending" style="width: 277px;">引擎版本</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="CSS等级: activate to sort column ascending" style="width: 265px;">CSS等级</th></tr>
+                    </thead>
+                    <tbody id="table_tb">
+
+
+
+
+    <!--
+                    <tr class="gradeA odd" role="row">
+                        <td class="sorting_1">Gecko</td>
+                        <td>Firefox 1.0</td>
+                        <td>Win 98+ / OSX.2+</td>
+                        <td class="center">1.7</td>
+                        <td class="center">A</td>
+                    </tr>
+                    -->
+
+
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                    </table>
+                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                        <ul class="pagination" id="idPagination" >
+
+                        </ul>
+                    </div>
+                    </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                     <div class="ibox float-e-margins showtab" style="margin-top: 0px">
+
+                         <div id="draw" style="min-width:400px;height:400px"></div>
+                            <div class="message"></div>
+                     </div>
+
+
+
+
+
+
+                 </div>
+
+
+
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+{% endblock %}
+
+
+
+{% block jsref %}
+<script src="/static/js/nbList.js"></script>
+
+{% endblock %}
+
+
+{% block js %}
+
+
+
+
+
+
+
+$(function () {
+
+
+
+
+
+
+    $.NB("/history-data-json.html");
+        });
+
+
+{% endblock %}

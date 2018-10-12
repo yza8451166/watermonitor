@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>水利监测</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="/static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="/static/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="/static/css/animate.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+
+
+
+
+
+
+<style>
+
+#watermo{
+
+    color: white!important;
+
+}
+
+    .lino{
+        list-style: none;
+
+
+    }
+    .lino li{
+        display: inline-block;
+        margin-left: 8px;
+        margin-bottom: 0  !important;
+        font-size: 30px;
+
+    }
+    .act{
+        background-color: white;
+        color: #0d70b7;
+
+    }
+    .showtab{
+        display: block;
+
+
+    }
+    .hidtab{
+
+        display: none;
+    }
+
+
+    {% block css %}
+
+
+    {% endblock %}
+
+
+    </style>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="/static/img/profile_small.jpg" />
+                             </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ request.session.username }}</strong>
+                             </span> <span class="text-muted text-xs block">管理员 <b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="profile.html">个人信息</a></li>
+                                <li><a href="contacts.html">好友</a></li>
+                                <li><a href="mailbox.html">信箱</a></li>
+                                <li class="divider"></li>
+                                <li><a href="login.html">登出</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            IN+
+                        </div>
+                    </li>
+
+                    <li class="active"><a href="index.html">环境监控云平台</a></li>
+
+                    <li class="active">
+                        <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">在线监控</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li class="active"><a href="/history-data-show.html">实时数据</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">数据中心</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="graph_flot.html">历史数据查询</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">邮箱 </span><span class="label label-warning pull-right">16/24</span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="mailbox.html">收件箱</a></li>
+                            <li><a href="mail_detail.html">邮件内容</a></li>
+                            <li><a href="mail_compose.html">撰写邮件</a></li>
+                            <li><a href="email_template.html">邮件模板</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            <form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="请输入搜索内容" class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <span class="m-r-sm text-muted welcome-message">欢迎来到网豫游戏管理后台</span>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="/static/img/a7.jpg">
+                                </a>
+                                <div class="media-body">
+                                    <small class="pull-right">46小时前</small>
+                                    <strong>小明</strong> 评论了 <strong>小红</strong>. <br>
+                                    <small class="text-muted">2017.10.06 7:58</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="/static/img/a4.jpg">
+                                </a>
+                                <div class="media-body ">
+                                    <small class="pull-right text-navy">5小时前</small>
+                                    <strong>小红</strong> 打电话给了 <strong>小黑</strong>. <br>
+                                    <small class="text-muted">2017.10.06 7:58</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="/static/img/profile.jpg">
+                                </a>
+                                <div class="media-body ">
+                                    <small class="pull-right">23小时前</small>
+                                    <strong>小黑</strong> 点赞了 <strong>小红</strong>. <br>
+                                    <small class="text-muted">2017.10.06 7:58</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="mailbox.html">
+                                    <i class="fa fa-envelope"></i> <strong>阅读所有消息</strong>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="mailbox.html">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> 你有16条消息
+                                    <span class="pull-right text-muted small">4 分钟前</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="profile.html">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 个新的关注者
+                                    <span class="pull-right text-muted small">12 分钟前</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="grid_options.html">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> 重启服务器
+                                    <span class="pull-right text-muted small">4 分钟前</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="notifications.html">
+                                    <strong>查看所有信息</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="login.html">
+                        <i class="fa fa-sign-out"></i> 注销
+                    </a>
+                </li>
+                <li>
+                    <a class="right-sidebar-toggle">
+                        <i class="fa fa-tasks"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+        </div>
+
+            {% block content %}
+
+
+
+            {% endblock %}
+
+
+        </div>
+        <div class="small-chat-box fadeInRight animated">
+
+            <div class="heading" draggable="true">
+                <small class="chat-date pull-right">
+                    2017.12.12
+                </small>
+                与 小王 聊天中
+            </div>
+
+            <div class="content">
+
+                <div class="left">
+                    <div class="author-name">
+                        小王 <small class="chat-date">
+                        10:02 am
+                    </small>
+                    </div>
+                    <div class="chat-message active">
+                        在吗？
+                    </div>
+
+                </div>
+                <div class="right">
+                    <div class="author-name">
+                        游客
+                        <small class="chat-date">
+                            11:24
+                        </small>
+                    </div>
+                    <div class="chat-message">
+                        我不在！
+                    </div>
+                </div>
+                <div class="left">
+                    <div class="author-name">
+                        小王
+                        <small class="chat-date">
+                            08:45
+                        </small>
+                    </div>
+                    <div class="chat-message active">
+                        不在还可以说话
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="author-name">
+                        游客
+                        <small class="chat-date">
+                            11:24
+                        </small>
+                    </div>
+                    <div class="chat-message">
+                        我是游客，所以我不在！
+                    </div>
+                </div>
+                <div class="left">
+                    <div class="author-name">
+                        小王
+                        <small class="chat-date">
+                            08:45
+                        </small>
+                    </div>
+                    <div class="chat-message active">
+                        好吧
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="form-chat">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control">
+                    <span class="input-group-btn"> <button
+                        class="btn btn-primary" type="button">发送
+                </button> </span></div>
+            </div>
+
+        </div>
+        <div id="small-chat">
+
+            <span class="badge badge-warning pull-right">5</span>
+            <a class="open-small-chat">
+                <i class="fa fa-comments"></i>
+
+            </a>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="/static/js/jquery-3.1.1.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Flot -->
+    <script src="/static/js/plugins/flot/jquery.flot.js"></script>
+    <script src="/static/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="/static/js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="/static/js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="/static/js/plugins/flot/jquery.flot.pie.js"></script>
+
+    <!-- Peity -->
+    <script src="/static/js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="/static/js/demo/peity-demo.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="/static/js/inspinia.js"></script>
+    <script src="/static/js/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="/static/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- GITTER -->
+    <script src="/static/js/plugins/gritter/jquery.gritter.min.js"></script>
+
+    <!-- Sparkline -->
+    <script src="/static/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Sparkline demo data  -->
+    <script src="/static/js/demo/sparkline-demo.js"></script>
+
+    <!-- ChartJS-->
+    <script src="/static/js/plugins/chartJs/Chart.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="/static/js/plugins/toastr/toastr.min.js"></script>
+
+    <script src="/static/highcharts/highcharts.js"></script>
+    <script src="/static/highcharts/highcharts-zh_CN.js"></script>
+    <script src="/static/highcharts/highcharts-more.js"></script>
+    <script src="/static/highcharts/exporting.js"></script>
+
+
+
+
+{% block jsref %}
+
+
+
+ {% endblock %}
+
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'slideDown',
+                    timeOut: 4000
+                };
+                toastr.success('网豫游戏管理者', '欢迎您王宇');
+
+            }, 1300);
+
+
+            var data1 = [
+                [0,4],[1,8],[2,5],[3,10],[4,4],[5,16],[6,5],[7,11],[8,6],[9,11],[10,30],[11,10],[12,13],[13,4],[14,3],[15,3],[16,6]
+            ];
+            var data2 = [
+                [0,1],[1,0],[2,2],[3,0],[4,1],[5,3],[6,1],[7,5],[8,2],[9,3],[10,2],[11,1],[12,0],[13,2],[14,8],[15,0],[16,0]
+            ];
+            $("#flot-dashboard-chart").length && $.plot($("#flot-dashboard-chart"), [
+                data1, data2
+            ],
+                    {
+                        series: {
+                            lines: {
+                                show: false,
+                                fill: true
+                            },
+                            splines: {
+                                show: true,
+                                tension: 0.4,
+                                lineWidth: 1,
+                                fill: 0.4
+                            },
+                            points: {
+                                radius: 0,
+                                show: true
+                            },
+                            shadowSize: 2
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true,
+                            tickColor: "#d5d5d5",
+                            borderWidth: 1,
+                            color: '#d5d5d5'
+                        },
+                        colors: ["#1ab394", "#1C84C6"],
+                        xaxis:{
+                        },
+                        yaxis: {
+                            ticks: 4
+                        },
+                        tooltip: false
+                    }
+            );
+
+            var doughnutData = {
+                labels: ["App","Software","Laptop" ],
+                datasets: [{
+                    data: [300,50,100],
+                    backgroundColor: ["#a3e1d4","#dedede","#9CC3DA"]
+                }]
+            } ;
+
+
+            var doughnutOptions = {
+                responsive: false,
+                legend: {
+                    display: false
+                }
+            };
+
+
+            var ctx4 = document.getElementById("doughnutChart").getContext("2d");
+            new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
+
+            var doughnutData = {
+                labels: ["App","Software","Laptop" ],
+                datasets: [{
+                    data: [70,27,85],
+                    backgroundColor: ["#a3e1d4","#dedede","#9CC3DA"]
+                }]
+            } ;
+
+
+            var doughnutOptions = {
+                responsive: false,
+                legend: {
+                    display: false
+                }
+            };
+
+
+            var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
+            new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
+
+        });
+    </script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-4625583-2', 'webapplayers.com');
+        ga('send', 'pageview');
+
+    </script>
+
+<script>
+    // Config box
+
+    // Enable/disable fixed top navbar
+    $('#fixednavbar').click(function (){
+        if ($('#fixednavbar').is(':checked')){
+            $(".navbar-static-top").removeClass('navbar-static-top').addClass('navbar-fixed-top');
+            $("body").removeClass('boxed-layout');
+            $("body").addClass('fixed-nav');
+            $('#boxedlayout').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar",'on');
+            }
+        } else{
+            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            $("body").removeClass('fixed-nav');
+            $("body").removeClass('fixed-nav-basic');
+            $('#fixednavbar2').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar2",'off');
+            }
+        }
+    });
+
+    // Enable/disable fixed top navbar
+    $('#fixednavbar2').click(function (){
+        if ($('#fixednavbar2').is(':checked')){
+            $(".navbar-static-top").removeClass('navbar-static-top').addClass('navbar-fixed-top');
+            $("body").removeClass('boxed-layout');
+            $("body").addClass('fixed-nav').addClass('fixed-nav-basic');
+            $('#boxedlayout').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar2",'on');
+            }
+        } else {
+            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            $("body").removeClass('fixed-nav').removeClass('fixed-nav-basic');
+            $('#fixednavbar').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar2",'off');
+            }
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar",'off');
+            }
+        }
+    });
+
+    // Enable/disable fixed sidebar
+    $('#fixedsidebar').click(function (){
+        if ($('#fixedsidebar').is(':checked')){
+            $("body").addClass('fixed-sidebar');
+            $('.sidebar-collapse').slimScroll({
+                height: '100%',
+                railOpacity: 0.9
+            });
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedsidebar",'on');
+            }
+        } else{
+            $('.sidebar-collapse').slimscroll({destroy: true});
+            $('.sidebar-collapse').attr('style', '');
+            $("body").removeClass('fixed-sidebar');
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedsidebar",'off');
+            }
+        }
+    });
+
+    // Enable/disable collapse menu
+    $('#collapsemenu').click(function (){
+        if ($('#collapsemenu').is(':checked')){
+            $("body").addClass('mini-navbar');
+            SmoothlyMenu();
+
+            if (localStorageSupport){
+                localStorage.setItem("collapse_menu",'on');
+            }
+
+        } else{
+            $("body").removeClass('mini-navbar');
+            SmoothlyMenu();
+
+            if (localStorageSupport){
+                localStorage.setItem("collapse_menu",'off');
+            }
+        }
+    });
+
+    // Enable/disable boxed layout
+    $('#boxedlayout').click(function (){
+        if ($('#boxedlayout').is(':checked')){
+            $("body").addClass('boxed-layout');
+            $('#fixednavbar').prop('checked', false);
+            $('#fixednavbar2').prop('checked', false);
+            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            $("body").removeClass('fixed-nav');
+            $("body").removeClass('fixed-nav-basic');
+            $(".footer").removeClass('fixed');
+            $('#fixedfooter').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar2",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedfooter",'off');
+            }
+
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'on');
+            }
+        } else{
+            $("body").removeClass('boxed-layout');
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'off');
+            }
+        }
+    });
+
+    // Enable/disable fixed footer
+    $('#fixedfooter').click(function (){
+        if ($('#fixedfooter').is(':checked')){
+            $('#boxedlayout').prop('checked', false);
+            $("body").removeClass('boxed-layout');
+            $(".footer").addClass('fixed');
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedfooter",'on');
+            }
+        } else{
+            $(".footer").removeClass('fixed');
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedfooter",'off');
+            }
+        }
+    });
+
+    // SKIN Select
+    $('.spin-icon').click(function (){
+        $(".theme-config-box").toggleClass("show");
+    });
+
+    // Default skin
+    $('.s-skin-0').click(function (){
+        $("body").removeClass("skin-1");
+        $("body").removeClass("skin-2");
+        $("body").removeClass("skin-3");
+    });
+
+    // Blue skin
+    $('.s-skin-1').click(function (){
+        $("body").removeClass("skin-2");
+        $("body").removeClass("skin-3");
+        $("body").addClass("skin-1");
+    });
+
+    // Inspinia ultra skin
+    $('.s-skin-2').click(function (){
+        $("body").removeClass("skin-1");
+        $("body").removeClass("skin-3");
+        $("body").addClass("skin-2");
+    });
+
+    // Yellow skin
+    $('.s-skin-3').click(function (){
+        $("body").removeClass("skin-1");
+        $("body").removeClass("skin-2");
+        $("body").addClass("skin-3");
+    });
+
+    if (localStorageSupport){
+        var collapse = localStorage.getItem("collapse_menu");
+        var fixedsidebar = localStorage.getItem("fixedsidebar");
+        var fixednavbar = localStorage.getItem("fixednavbar");
+        var fixednavbar2 = localStorage.getItem("fixednavbar2");
+        var boxedlayout = localStorage.getItem("boxedlayout");
+        var fixedfooter = localStorage.getItem("fixedfooter");
+
+        if (collapse == 'on'){
+            $('#collapsemenu').prop('checked','checked')
+        }
+        if (fixedsidebar == 'on'){
+            $('#fixedsidebar').prop('checked','checked')
+        }
+        if (fixednavbar == 'on'){
+            $('#fixednavbar').prop('checked','checked')
+        }
+        if (fixednavbar2 == 'on'){
+            $('#fixednavbar2').prop('checked','checked')
+        }
+        if (boxedlayout == 'on'){
+            $('#boxedlayout').prop('checked','checked')
+        }
+        if (fixedfooter == 'on') {
+            $('#fixedfooter').prop('checked','checked')
+        }
+    }
+
+
+
+
+</script>
+<!--同步官网模板结束-->
+
+<script>
+
+
+
+{% block js %}
+
+
+{% endblock %}
+
+
+
+
+$('#canva').click(function () {
+
+
+
+
+
+
+
+
+    var chart = Highcharts.chart('container', {
+	chart: {
+		type: 'spline'
+	},
+	title: {
+		text: '水利监测曲线图'
+	},
+	subtitle: {
+		text: ''
+	},
+	xAxis: {
+		type: 'datetime',
+		dateTimeLabelFormats: {
+			week: '%Y-%m-%d-%H-%m'
+		},
+	},
+	yAxis: {
+		title: {
+			text: '液位 (C/m)'
+		},
+		min: 0,
+		minorGridLineWidth: 0,
+		gridLineWidth: 0,
+		alternateGridColor: null,
+		plotBands: [{ // Light air
+			from: 0.3,
+			to: 1.5,
+			color: 'rgba(68, 170, 213, 0.1)',
+			label: {
+				text: '',
+				style: {
+					color: '#606060'
+				}
+			}
+		}, { // Light breeze
+			from: 1.5,
+			to: 3.3,
+			color: 'rgba(0, 0, 0, 0)',
+			label: {
+				text: '',
+				style: {
+					color: '#606060'
+				}
+			}
+		}, { // Gentle breeze
+			from: 3.3,
+			to: 5.5,
+			color: 'rgba(68, 170, 213, 0.1)',
+			label: {
+				text: '',
+				style: {
+					color: '#606060'
+				}
+			}
+		}, { // Moderate breeze
+			from: 5.5,
+			to: 8,
+			color: 'rgba(0, 0, 0, 0)',
+			label: {
+				text: '',
+				style: {
+					color: '#606060'
+				}
+			}
+		}, { // Fresh breeze
+			from: 8,
+			to: 11,
+			color: 'rgba(68, 170, 213, 0.1)',
+			label: {
+				text: '',
+				style: {
+					color: '#606060'
+				}
+			}
+		}, { // Strong breeze
+			from: 11,
+			to: 14,
+			color: 'rgba(0, 0, 0, 0)',
+			label: {
+				text: '',
+				style: {
+					color: '#606060'
+				}
+			}
+		}, { // High wind
+			from: 14,
+			to: 15,
+			color: 'rgba(68, 170, 213, 0.1)',
+			label: {
+				text: '',
+				style: {
+					color: '#606060'
+				}
+			}
+		}]
+	},
+	tooltip: {
+		valueSuffix: ' C/m'
+	},
+	plotOptions: {
+		spline: {
+			lineWidth: 4,
+			states: {
+				hover: {
+					lineWidth: 5
+				}
+			},
+			marker: {
+				enabled: false
+			},
+			pointInterval: 60 * 1000,
+			pointStart: Date.UTC(2018, 10, 12, 9)
+		}
+	},
+	series: [{
+		name: 'Hestavollane',
+		data: [4.3, 5.1, 4.3, 5.2, 5.4, 4.7, 3.5, 4.1, 5.6, 7.4, 6.9, 7.1,
+			   7.9, 7.9, 7.5, 6.7, 7.7, 7.7, 7.4, 7.0, 7.1, 5.8, 5.9, 7.4,
+			   8.2, 8.5, 9.4, 8.1, 10.9, 10.4, 10.9, 12.4, 12.1, 9.5, 7.5,
+			   7.1, 7.5, 8.1, 6.8, 3.4, 2.1, 1.9, 2.8, 2.9, 1.3, 4.4, 4.2,
+			   3.0, 3.0]
+	}, {
+		name: 'Voll',
+		data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.3, 0.0,
+			   0.0, 0.4, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+			   0.0, 0.6, 1.2, 1.7, 0.7, 2.9, 4.1, 2.6, 3.7, 3.9, 1.7, 2.3,
+			   3.0, 3.3, 4.8, 5.0, 4.8, 5.0, 3.2, 2.0, 0.9, 0.4, 0.3, 0.5, 0.4]
+	}],
+	navigation: {
+		menuItemStyle: {
+			fontSize: '10px'
+		}
+	}
+},function (chart) {
+
+
+    });
+
+
+
+
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+</body>
+</html>

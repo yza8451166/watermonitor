@@ -1,0 +1,225 @@
+{% extends 'layout.html' %}
+
+
+
+
+{% block css %}
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+
+
+
+
+var countx =0;
+
+var charts =new Array();
+function getvalue() {
+
+        console.log('11111111111111111111');
+
+
+        $.ajax(
+        {
+            url:'/getvalue',
+            type:'get',
+            data:'',
+            datatype:'json',
+            success:function (arg) {
+                console.log(arg);
+
+            var  wali =$.parseJSON(arg);
+                //[[0.018, "20003756"], [0.0, "20003757"]]
+                console.log(wali[0]);
+
+            $.each(wali,function (i,item) {
+
+                    console.log(i,item);
+                    countx+=1;
+
+                    console.log('wali.length',wali.length);
+                    if (countx <=wali.length){
+
+                        var base ='watermo';
+                        var fin =base+String(i);
+
+                        var tg ='<div  seq=\"'+ String(i) + '\"     id=\"'+fin+ '\" style=\"min-width: 200px; display: inline-block;max-width: 300px; height: 300px;\"></div>';
+                        console.log('tg',tg);
+
+                        $('#page-wrapper').append(tg);
+
+                   /*   <div class="watermo" style="min-width: 200px; max-width: 300px; height: 300px; margin: 0 auto">
+                        <p></p>
+                    </div>   */
+                //var =
+
+                    var chart = Highcharts.chart(fin,{
+	chart: {
+		type: 'gauge',
+		plotBackgroundColor: null,
+		plotBackgroundImage: null,
+		plotBorderWidth: 0,
+		plotShadow: false
+	},
+	title: {
+		text: '速度仪'
+	},
+	pane: {
+		startAngle: -150,
+		endAngle: 150,
+		background: [{
+			backgroundColor: {
+				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+				stops: [
+					[0, '#FFF'],
+					[1, '#333']
+				]
+			},
+			borderWidth: 0,
+			outerRadius: '109%'
+		}, {
+			backgroundColor: {
+				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+				stops: [
+					[0, '#333'],
+					[1, '#FFF']
+				]
+			},
+			borderWidth: 1,
+			outerRadius: '107%'
+		}, {
+			// default background
+		}, {
+			backgroundColor: '#DDD',
+			borderWidth: 0,
+			outerRadius: '105%',
+			innerRadius: '103%'
+		}]
+	},
+	// the value axis
+	yAxis: {
+		min: 0,
+		max: 100,
+		minorTickInterval: 'auto',
+		minorTickWidth: 1,
+		minorTickLength: 10,
+		minorTickPosition: 'inside',
+		minorTickColor: '#666',
+		tickPixelInterval: 30,
+		tickWidth: 2,
+		tickPosition: 'inside',
+		tickLength: 10,
+		tickColor: '#666',
+		labels: {
+			step: 2,
+			rotation: 'auto'
+		},
+		title: {
+			text: 'km/h'
+		},
+		plotBands: [{
+			from: 0,
+			to: 30,
+			color: '#55BF3B' // green
+		}, {
+			from: 30,
+			to: 60,
+			color: '#DDDF0D' // yellow
+		}, {
+			from: 60,
+			to: 100,
+			color: '#DF5353' // red
+		}]
+	},
+	series: [{
+		name: 'Speed',
+		data: [0],
+		tooltip: {
+			valueSuffix: ' km/h'
+		}
+	}]
+}, function (chart) {
+});
+                    var point = chart.series[0].points[0];
+
+                    console.log('fnvalue',Math.round(item[0]*50));
+
+			        point.update(Math.round(item[0]*50));
+
+                    charts.push(chart);
+                    }else{
+
+                        var point =charts[i].series[0].points[0];
+                        console.log('fnvalue',Math.round(item[0]*50));
+                        point.update(Math.round(item[0]*50));
+                    };
+
+                });
+
+
+
+            }
+        }
+    )
+
+
+
+
+
+}
+setInterval("getvalue()",30*1000);
+
+                 /*   <div class="watermo" style="min-width: 200px; max-width: 300px; height: 300px; margin: 0 auto">
+                        <p></p>
+                    </div>   */
+                //var =
+
+
+                    /*
+                    		setInterval(function () {
+
+			var point = chart.series[0].points[0];
+			point.update(80);
+		}, 30*1000);  */
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
